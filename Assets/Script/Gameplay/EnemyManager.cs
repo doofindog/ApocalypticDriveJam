@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.iOS;
 using Random = UnityEngine.Random;
 
 public class EnemyManager : MonoBehaviour
