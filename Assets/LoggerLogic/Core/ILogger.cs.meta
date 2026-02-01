@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 4d5b4e814376ed7458d67a8c7a6a730f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 322404
+  packageName: "Logger \u2014 Lightweight & Flexible Debugging Tool for Unity"
+  packageVersion: 2.0
+  assetPath: Assets/LoggerLogic/Core/ILogger.cs
+  uploadId: 826598
