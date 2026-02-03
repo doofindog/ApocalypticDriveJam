@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -8,6 +9,7 @@ namespace ArcadeVP
     {
         [FormerlySerializedAs("m_movementInput")] [SerializeField] private InputActionReference movementInput;
         [FormerlySerializedAs("m_breakInput")] [SerializeField] private InputActionReference breakInput;
+        [SerializeField] private InputActionReference boostInput;
             
         public enum groundCheck { rayCast, sphereCaste };
         public enum MovementMode { Velocity, AngularVelocity };
@@ -19,6 +21,14 @@ namespace ArcadeVP
         public bool AirControl = false;
         public Rigidbody rb, carBody;
         public float breakValue;
+        public float boostValue;
+
+        [Header("Boost")] 
+        public SerializedFloat boostFuel;
+        public float boostComsumptionRate;
+        public float boostFillRate;
+        public float maxBoostFuel;
+        
 
         [HideInInspector]
         public RaycastHit hit;
@@ -48,7 +58,9 @@ namespace ArcadeVP
 
         private float radius, horizontalInput, verticalInput;
         private Vector3 origin;
-
+        
+        private CameraShake cameraShake;
+        
         private void Start()
         {
             radius = rb.GetComponent<SphereCollider>().radius;
@@ -57,18 +69,65 @@ namespace ArcadeVP
                 Physics.defaultMaxAngularSpeed = 100;
             }
             
+            if(Camera.main)
+                cameraShake ??= Camera.main.GetComponent<CameraShake>();
+
+            boostInput.action.started += OnBoostPressed;
+            boostInput.action.performed += OnBoostPressed;
+            boostInput.action.canceled += OnBoostPressed;
+
+            boostFuel.Value = maxBoostFuel;
         }
+
+        private void OnDestroy()
+        {
+            boostInput.action.started -= OnBoostPressed;
+            boostInput.action.performed -= OnBoostPressed;
+            boostInput.action.canceled -= OnBoostPressed;
+        }
+
+        private void OnBoostPressed(InputAction.CallbackContext obj)
+        {
+            if (obj.performed)
+            {
+                Debug.Log("Perform Boost");
+                boostValue = 1;
+                if (boostFuel.Value > 0)
+                    cameraShake.Shake(2, 0.5f);
+            }
+
+            if (obj.canceled)
+            {
+                Debug.Log("Cancelled Boost");
+                boostValue = 0;
+            }
+        }
+
         private void Update()
         {
             Vector2 movement =  movementInput.action.ReadValue<Vector2>();
             horizontalInput = movement.x; //turning input
             verticalInput = movement.y;     //accelaration input
             
-            breakValue = breakInput.action.ReadValue<float>();
             
+            HandleBoost();
             Visuals();
             AudioManager();
+        }
 
+        private void HandleBoost()
+        {
+            switch (boostValue)
+            {
+                case > 0 when boostFuel.Value > 0:
+                    boostFuel.Value -= boostComsumptionRate * Time.deltaTime;
+                    boostFuel.Value = Mathf.Clamp(boostFuel.Value, 0, maxBoostFuel);
+                    break;
+                case 0 when boostFuel.Value < maxBoostFuel:
+                    boostFuel.Value += Time.deltaTime * boostFillRate;
+                    boostFuel.Value = Mathf.Clamp(boostFuel.Value, 0, maxBoostFuel);
+                    break;
+            }
         }
         public void AudioManager()
         {
@@ -122,9 +181,11 @@ namespace ArcadeVP
                 }
                 else if (movementMode == MovementMode.Velocity)
                 {
+                    float speed = boostValue > 0.1 ? MaxSpeed * 2 : MaxSpeed;
+                    
                     if (Mathf.Abs(verticalInput) > 0.1f && breakValue < 0.1f)
                     {
-                        rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, carBody.transform.forward * verticalInput * MaxSpeed, accelaration / 10 * Time.deltaTime);
+                        rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, carBody.transform.forward * (verticalInput * speed), accelaration / 10 * Time.deltaTime);
                     }
                 }
 

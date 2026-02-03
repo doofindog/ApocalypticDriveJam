@@ -632,6 +632,7 @@ GameObject:
   - component: {fileID: 322223224}
   - component: {fileID: 322223227}
   - component: {fileID: 322223226}
+  - component: {fileID: 322223228}
   m_Layer: 0
   m_Name: Player Camera
   m_TagString: Untagged
@@ -745,6 +746,23 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 14, z: -15}
+--- !u!114 &322223228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322223223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBasicMultiChannelPerlin
+  NoiseProfile: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 0
+  FrequencyGain: 2
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &325719820
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,6 +913,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1052,6 +1071,20 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc1e45dde9a76a4698b6a2c5bf05154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShake
+  virtualCamera: {fileID: 322223224}
+  shakeDuration: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1621,6 +1654,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementInput: {fileID: 515669936}
   breakInput: {fileID: 1241648587}
+  boostInput: {fileID: 919688144}
   movementMode: 0
   GroundCheck: 0
   drivableSurface:
@@ -1635,6 +1669,11 @@ MonoBehaviour:
   rb: {fileID: 1524978471}
   carBody: {fileID: 615803717}
   breakValue: 0
+  boostValue: 0
+  boostFuel: {fileID: 11400000, guid: 0a11668cd625b2c41bdd0f217646c598, type: 2}
+  boostComsumptionRate: 2
+  boostFillRate: 1
+  maxBoostFuel: 5
   frictionCurve:
     serializedVersion: 2
     m_Curve:
@@ -11879,6 +11918,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &919688144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Sprint
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionId: 641cd816-40e6-41b4-8c3d-04687c349290
 --- !u!1 &922270383
 GameObject:
   m_ObjectHideFlags: 0

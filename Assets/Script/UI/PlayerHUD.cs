@@ -18,7 +18,11 @@ public class PlayerHUD : MonoBehaviour
     private Transform deliveryTarget;
 
     [Header("Indicator Behavior")]
-    [SerializeField] private float hideIfCloserThan = 1.25f; 
+    [SerializeField] private float hideIfCloserThan = 1.25f;
+
+    [Header("Boost UI")] [SerializeField] 
+    private SerializedFloat boostValue;
+    [SerializeField] private Image boostUI;
     
     private void Awake()
     {
@@ -34,6 +38,7 @@ public class PlayerHUD : MonoBehaviour
         DeliveryManager.OnDeliveryStarted += UpdateIndicator;
         DeliveryManager.OnDeliveryCompleted += DisableIndicator;
         deliveryProgress.OnValueChanged += UpdateProgressBar;
+        boostValue.OnValueChanged += UpdateBoostUI;
         
 
         if (deliveryProgressTransform != null)
@@ -95,6 +100,15 @@ public class PlayerHUD : MonoBehaviour
         deliveryProgressImage.gameObject.SetActive(value > 0);
         
         deliveryProgressImage.fillAmount = Mathf.Clamp01(value / 5.0f);
+    }
+
+    private void UpdateBoostUI(float value)
+    {
+        if (boostUI == null)
+            return;
+        
+        Debug.Log(value);
+        boostUI.fillAmount = (value / 5.0f);
     }
 
     private void UpdateIndicatorArrow(Vector3 playerScreen)
