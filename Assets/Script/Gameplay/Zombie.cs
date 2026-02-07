@@ -43,7 +43,7 @@ public class Zombie : MonoBehaviour
             return;
 
         player.TakeDamage(damage);
-
+        
         //Debug.Log("Zombie attacked the player!");
     }
 
