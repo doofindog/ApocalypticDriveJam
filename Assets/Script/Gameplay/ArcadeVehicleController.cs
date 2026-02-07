@@ -7,9 +7,15 @@ namespace ArcadeVP
 {
     public class ArcadeVehicleController : MonoBehaviour
     {
-        [FormerlySerializedAs("m_movementInput")] [SerializeField] private InputActionReference movementInput;
-        [FormerlySerializedAs("m_breakInput")] [SerializeField] private InputActionReference breakInput;
+        [Header("Input")]
+        [SerializeField] private InputActionReference movementInput;
+        [SerializeField] private InputActionReference breakInput;
         [SerializeField] private InputActionReference boostInput;
+        
+        [Header("Stats")]
+        public SerializedFloat health;
+        public SerializedFloat boostFuel;
+        
             
         public enum groundCheck { rayCast, sphereCaste };
         public enum MovementMode { Velocity, AngularVelocity };
@@ -23,8 +29,10 @@ namespace ArcadeVP
         public float breakValue;
         public float boostValue;
 
+        [Header("Health")] 
+        public float maxHealth;
+
         [Header("Boost")] 
-        public SerializedFloat boostFuel;
         public float boostComsumptionRate;
         public float boostFillRate;
         public float maxBoostFuel;
@@ -77,6 +85,7 @@ namespace ArcadeVP
             boostInput.action.canceled += OnBoostPressed;
 
             boostFuel.Value = maxBoostFuel;
+            health.Value = maxHealth;
         }
 
         private void OnDestroy()
@@ -285,8 +294,20 @@ namespace ArcadeVP
                 }
 
             }
-
         }
 
+        public void TakeDamage(float damage)
+        {
+            health.Value -= damage;
+            if (health.Value <= 0)
+            {
+                DestroyCar();
+            }
+        }
+
+        private void DestroyCar()
+        {
+            
+        }
     }
 }

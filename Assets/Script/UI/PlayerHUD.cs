@@ -1,11 +1,13 @@
 using System;
+using ArcadeVP;
 using Azen.Logger;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
+    [SerializeField] private ArcadeVehicleController player;
+    [SerializeField] private GameObject playerObj;
     [SerializeField] private SerializedFloat deliveryProgress;
     [SerializeField] private RectTransform deliveryProgressTransform;
     [SerializeField] private Image deliveryProgressImage;
@@ -24,6 +26,12 @@ public class PlayerHUD : MonoBehaviour
     private SerializedFloat boostValue;
     [SerializeField] private Image boostUI;
     
+    
+    [Header("Health UI")]
+    [SerializeField] private SerializedFloat healthValue;
+    [SerializeField] private Image healthBar;
+
+    
     private void Awake()
     {
         if (deliveryProgress == null)
@@ -39,31 +47,43 @@ public class PlayerHUD : MonoBehaviour
         DeliveryManager.OnDeliveryCompleted += DisableIndicator;
         deliveryProgress.OnValueChanged += UpdateProgressBar;
         boostValue.OnValueChanged += UpdateBoostUI;
+        healthValue.OnValueChanged += UpdateHealthUI;
         
 
         if (deliveryProgressTransform != null)
         {
             deliveryProgressTransform.gameObject.SetActive(false);
         }
+        
+        if(playerObj)
+            player = playerObj.GetComponent<ArcadeVehicleController>();
     }
-    
+
+    private void UpdateHealthUI(float value)
+    {
+        Debug.Log("Called");
+        healthBar.fillAmount = (value / player.maxHealth);
+    }
+
     private void OnDestroy()
     {
         if (deliveryProgress != null)
             deliveryProgress.OnValueChanged -= UpdateProgressBar;
         
-        
         DeliveryManager.OnDeliveryStarted -= UpdateIndicator;
         DeliveryManager.OnDeliveryCompleted -= DisableIndicator;
+        deliveryProgress.OnValueChanged -= UpdateProgressBar;
+        boostValue.OnValueChanged -= UpdateBoostUI;
+        healthValue.OnValueChanged -= UpdateHealthUI;
     }
 
     private void Update()
     {
-        if (player == null || deliveryProgressTransform == null || targetCamera == null)
+        if (playerObj == null || deliveryProgressTransform == null || targetCamera == null)
             return;
 
         // World position above player
-        Vector3 worldPos = player.transform.position + worldOffset;
+        Vector3 worldPos = playerObj.transform.position + worldOffset;
 
         // Convert to screen position
         Vector3 screenPos = targetCamera.WorldToScreenPoint(worldPos);
@@ -123,7 +143,7 @@ public class PlayerHUD : MonoBehaviour
         }
 
         // If close enough in world space, hide arrow
-        float worldDist = Vector3.Distance(player.transform.position, deliveryTarget.position);
+        float worldDist = Vector3.Distance(playerObj.transform.position, deliveryTarget.position);
         if (worldDist <= hideIfCloserThan)
         {
             if (indicator.gameObject.activeSelf)

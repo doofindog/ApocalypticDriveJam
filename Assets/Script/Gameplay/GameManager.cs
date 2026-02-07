@@ -1,10 +1,12 @@
 using System;
+using ArcadeVP;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    
+
+    public ArcadeVehicleController player;
     public GameplayState gameplayState;
 
     private void Awake()
