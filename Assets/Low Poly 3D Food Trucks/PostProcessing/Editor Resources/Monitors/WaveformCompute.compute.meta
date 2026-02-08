@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9d9b886f7a8fe7b4baf56624c42e3420
+timeCreated: 1459956392
+licenseType: Store
+ComputeShaderImporter:
+  currentAPIMask: 4
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174469
+  packageName: Low Poly 3D Food Trucks
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly 3D Food Trucks/PostProcessing/Editor Resources/Monitors/WaveformCompute.compute
+  uploadId: 378324

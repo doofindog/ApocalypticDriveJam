@@ -17,12 +17,14 @@ public class DeliveryManager : MonoBehaviour
     [SerializeField] private float deliveryTime;
     [SerializeField] private SerializedFloat deliveryProgress;
     [SerializeField] public float deliveryCompleteTime;
-    [SerializeField] private int deliveryAmount;
+    [SerializeField] private int deliveryPaymentAmount;
+    [SerializeField] public int deliveryCounts;
     private Transform npc;
     
     [SerializeField] public LayerMask npcLayer;
 
     public static Action<int> OnDeliveryCompleted;
+    public static Action OnDeliveryFailed;
     public static Action<Transform> OnDeliveryStarted;
     
     private void Awake()
@@ -65,6 +67,21 @@ public class DeliveryManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.gameplayState == GameplayState.Delivering)
+        {
+            deliveryTimer += Time.deltaTime;
+            if (deliveryTimer >= deliveryTime)
+            {
+                deliveryProgress.Value = 0;
+             
+                
+                OnDeliveryFailed?.Invoke();
+                deliveryTimer = 0;
+                
+                return;
+            }
+        }
+        
         if(player == null || npc == null) return;
         
         float distance = Vector3.Distance(player.transform.position, npc.position);
@@ -80,9 +97,10 @@ public class DeliveryManager : MonoBehaviour
             deliveryProgress.Value = 0;
             Destroy(npc.gameObject);
             
-            int amount = deliveryAmount;
+            int amount = deliveryPaymentAmount;
             CurrencyManager.Instance.Add(amount);
             OnDeliveryCompleted?.Invoke(amount);
+            deliveryCounts++;
         }
     }
 }

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c83956915580e42489479d2a109470ab
+timeCreated: 1470404606
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174469
+  packageName: Low Poly 3D Food Trucks
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly 3D Food Trucks/PostProcessing/Resources/Shaders/MotionBlur.cginc
+  uploadId: 378324

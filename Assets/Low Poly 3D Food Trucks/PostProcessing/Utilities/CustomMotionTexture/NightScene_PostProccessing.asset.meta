@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 027edeb7546d3c34988c7ac75183c83c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174469
+  packageName: Low Poly 3D Food Trucks
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly 3D Food Trucks/PostProcessing/Utilities/CustomMotionTexture/NightScene_PostProccessing.asset
+  uploadId: 378324

@@ -1,0 +1,42 @@
+READ ME
+-------
+Asset: Low Poly 3D Food Trucks
+Version: 1.0
+Date: 03/07/2020 
+
+- This asset includes low poly 3D models.
+- This asset includes albedo textures.
+- This asset includes 2 glass materials.
+
+- Total Objects         = 33
+- Total Number Of Polys = 95248
+- Total Number Of Verts = 58513
+- Texture Resolution    = 2048*2048
+- Texture Type Of File  = .PNG
+- Textures Size Of:-
+                    1. IceCreme Truck = 557  kb
+                    2. IceCreams      = 163  kb
+                    3. HotDog Truck   = 453  kb
+                    4. HotDogs        = 28.3 kb
+                    5. Burger Truck   = 222  kb
+                    6. Burgers        = 25   kb
+
+
+Objects :-
+ 
+1. IceCream Truck = 1
+2. HotDog Truck   = 1 
+3. Burger truck   = 1
+4. IceCreams      = 10
+5. Burgers        = 10
+6. HotDogs        = 10
+
+- The package includes two demo scenes: 
+	1. Daylight: Directional light is used. 
+	2. Night View: Point lights are used for Food Truck lights alongwith sprites. Directional light is used to create night view. 
+- No Skybox is used. 
+- Post Processing Effects used: 
+	1. Bloom Effect
+	2. Vignette 
+
+Copyright 2020, Innovana Techlabs Limited. All rights reserved.

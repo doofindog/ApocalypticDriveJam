@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ac8ed710934a3564686a096bb351caee
+timeCreated: 1465484939
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174469
+  packageName: Low Poly 3D Food Trucks
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly 3D Food Trucks/PostProcessing/Resources/Shaders/DepthOfField.shader
+  uploadId: 378324
