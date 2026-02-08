@@ -5,12 +5,16 @@ using Random = UnityEngine.Random;
 
 public class FrequencyManager : MonoBehaviour
 {
+    public static FrequencyManager instance;
+    
     [SerializeField] private Transform player;
     [SerializeField] private float frequency;
     [SerializeField] private Vector3 bounds;
     [SerializeField] private Vector3 frequencyLocation;
     [SerializeField] private float frequencyAcceptableDistance;
-    [SerializeField] private float transmissionCompleteTime;
+    [SerializeField] public float transmissionCompleteTime;
+    
+    [SerializeField] public LayerMask transmissionLayer;
     
     [SerializeField] private SerializedFloat frequencyDistance;
     [SerializeField] private SerializedFloat transmissionProgress;
@@ -21,17 +25,33 @@ public class FrequencyManager : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
         DeliveryManager.OnDeliveryCompleted += SetNewFrequencyLocation;
     }
 
-    private void SetNewFrequencyLocation()
+    private void SetNewFrequencyLocation(int amount)
     {
-        frequencyLocation = transform.position;
-        frequencyLocation.x = Random.Range(-bounds.x, bounds.x);
-        frequencyLocation.y = Random.Range(-bounds.y, bounds.y);
+        bool validSpawn = false;
+
+        while (!validSpawn)
+        {
+            frequencyLocation = transform.position;
+            frequencyLocation.x = Random.Range(-bounds.x, bounds.x);
+            frequencyLocation.y = Random.Range(-bounds.y, bounds.y);
+            
+            Collider[] results = new Collider[5]; 
+            int hitCount = Physics.OverlapSphereNonAlloc(frequencyLocation, 2.5f, results, transmissionLayer);
+            if (hitCount == 0)
+            {
+                validSpawn = true;
+            }
+            
+            
+        }
         
         GameManager.Instance.SetState(GameplayState.Tracking);
     }
+    
 
     private void Update()
     {

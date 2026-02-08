@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class DeliveryManager : MonoBehaviour
 {
+    public static DeliveryManager instance;
+    
     [SerializeField] private GameObject player;
     
     [SerializeField] private GameObject npcPrefab;
@@ -14,26 +16,46 @@ public class DeliveryManager : MonoBehaviour
     [SerializeField] private float deliveryTimer;
     [SerializeField] private float deliveryTime;
     [SerializeField] private SerializedFloat deliveryProgress;
-    [SerializeField] private float deliveryCompleteTime;
+    [SerializeField] public float deliveryCompleteTime;
+    [SerializeField] private int deliveryAmount;
     private Transform npc;
+    
+    [SerializeField] public LayerMask npcLayer;
 
-    public static Action OnDeliveryCompleted;
+    public static Action<int> OnDeliveryCompleted;
     public static Action<Transform> OnDeliveryStarted;
     
     private void Awake()
     {
+        instance = this;
+        
         FrequencyManager.OnTransmissionCompleted += SpawnNPC;
         deliveryProgress.Value = 0;
     }
 
     private void SpawnNPC()
     {
-        Vector3 spawnPosition = new Vector3()
+        
+        bool isValidSpawn = false;
+
+        Vector3 spawnPosition = Vector3.zero;
+        while (!isValidSpawn)
         {
-            x = Random.Range(-bounds.x, bounds.x),
-            y = 1.0f,
-            z = Random.Range(-bounds.z, bounds.z)
-        };
+            spawnPosition = new Vector3()
+            {
+                x = Random.Range(-bounds.x, bounds.x),
+                y = 1.0f,
+                z = Random.Range(-bounds.z, bounds.z)
+            };
+            
+            Collider[] results = new Collider[5];
+            int hitCount = Physics.OverlapSphereNonAlloc(spawnPosition, 2.5f, results, npcLayer);
+            if (hitCount == 0)
+            {
+                isValidSpawn = true;
+            }
+        }
+
         
         var npcObj = Instantiate(npcPrefab, spawnPosition, Quaternion.identity);
         npc = npcObj.transform;
@@ -57,7 +79,10 @@ public class DeliveryManager : MonoBehaviour
         {
             deliveryProgress.Value = 0;
             Destroy(npc.gameObject);
-            OnDeliveryCompleted?.Invoke();
+            
+            int amount = deliveryAmount;
+            CurrencyManager.Instance.Add(amount);
+            OnDeliveryCompleted?.Invoke(amount);
         }
     }
 }

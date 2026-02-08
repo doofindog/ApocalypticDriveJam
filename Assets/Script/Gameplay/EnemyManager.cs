@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -20,7 +21,7 @@ public class EnemyManager : MonoBehaviour
     
     private List<NavMeshAgent> agents;
 
-    private void Start()
+    private IEnumerator Start()
     {
         agents ??= new List<NavMeshAgent>();
 
@@ -31,12 +32,42 @@ public class EnemyManager : MonoBehaviour
             
             agents.Add(navAgent);
 
-            enemyObj.transform.position = new Vector3()
+            bool isValidSpawn = false;
+
+            while (!isValidSpawn)
             {
-                x = Random.Range(-bounds.x, bounds.x),
-                y = 1.5f,
-                z = Random.Range(-bounds.z, bounds.z)
-            };
+                Vector3 spawnPosition = new Vector3()
+                {
+                    x = Random.Range(-bounds.x, bounds.x),
+                    y = 0,
+                    z = Random.Range(-bounds.z, bounds.z)
+                };
+                
+                Collider[] results = new Collider[5]; 
+                int hitCount = Physics.OverlapSphereNonAlloc(spawnPosition, 2.5f, results, LayerMask.GetMask("FrequencyIgnore"));
+                if (hitCount == 0)
+                {
+                    isValidSpawn = true;
+                    
+                    if (enemyObj.TryGetComponent(out NavMeshAgent agent))
+                    {
+                        // Sometimes agents misbehave if enabled before a valid position
+                        bool wasEnabled = agent.enabled;
+                        agent.enabled = false;
+
+                        enemyObj.transform.position = spawnPosition;
+
+                        agent.enabled = wasEnabled;
+
+                        // Warp ensures internal navmesh state is correct
+                        agent.Warp(spawnPosition);
+                    }
+                }
+                
+               
+            }
+
+            yield return null;
         }        
     }
 

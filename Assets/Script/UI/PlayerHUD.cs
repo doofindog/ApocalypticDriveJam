@@ -26,11 +26,9 @@ public class PlayerHUD : MonoBehaviour
     private SerializedFloat boostValue;
     [SerializeField] private Image boostUI;
     
-    
     [Header("Health UI")]
     [SerializeField] private SerializedFloat healthValue;
     [SerializeField] private Image healthBar;
-
     
     private void Awake()
     {
@@ -102,7 +100,7 @@ public class PlayerHUD : MonoBehaviour
         indicator.gameObject.SetActive(deliveryTarget != null);
     }
 
-    private void DisableIndicator()
+    private void DisableIndicator(int value)
     {
         if (indicator == null) return;
         
@@ -118,8 +116,8 @@ public class PlayerHUD : MonoBehaviour
         }
 
         deliveryProgressImage.gameObject.SetActive(value > 0);
-        
-        deliveryProgressImage.fillAmount = Mathf.Clamp01(value / 5.0f);
+
+        deliveryProgressImage.fillAmount = Mathf.Clamp01(value / DeliveryManager.instance.deliveryCompleteTime);
     }
 
     private void UpdateBoostUI(float value)
@@ -127,7 +125,6 @@ public class PlayerHUD : MonoBehaviour
         if (boostUI == null)
             return;
         
-        Debug.Log(value);
         boostUI.fillAmount = (value / 5.0f);
     }
 

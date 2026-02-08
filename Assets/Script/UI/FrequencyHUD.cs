@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Azen.Logger;
 using TMPro;
 using UnityEditor.Rendering;
@@ -35,6 +36,9 @@ public class FrequencyHUD : MonoBehaviour
     [Header("Alignment")]
     [Tooltip("How fast the player frequency moves toward target when close.")]
     [SerializeField] private float alignSpeed = 2.5f; // units: freq-per-second (scaled by closeness)
+
+    [Header("Currency HUD")] 
+    [SerializeField] private TMP_Text currencyText;
     
     [SerializeField] private float farFrequencyOffset = 1.5f;
     
@@ -52,6 +56,8 @@ public class FrequencyHUD : MonoBehaviour
         
         RollNewTargetFrequency();
         playerFreq = RandomWrongFrequencyFarFromTarget();
+
+        currencyText.text = CurrencyManager.Instance.GetAmount().ToString(CultureInfo.InvariantCulture);
     }
 
     private void OnDestroy()
@@ -96,13 +102,15 @@ public class FrequencyHUD : MonoBehaviour
         inRangeText.gameObject.SetActive(value > 0);
         if (inRangeText.gameObject.activeSelf)
         {
-            float progress = (value / 5.0f) * 100;
-            inRangeText.text = $"Receiving Transmission : {progress:F2}%";
+            float progress = (value / FrequencyManager.instance.transmissionCompleteTime) * 100;
+            inRangeText.text = $"Taking Order : {progress:F2}%";
         }
     }
     
-    public void SetTargetPoint()
+    public void SetTargetPoint(int amount)
     {
+        currencyText.text = (CurrencyManager.Instance.GetAmount()).ToString(CultureInfo.InvariantCulture);
+        
         RollNewTargetFrequency();
         playerFreq = RandomWrongFrequencyFarFromTarget();
     }
