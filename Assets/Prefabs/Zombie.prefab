@@ -351,6 +351,7 @@ MonoBehaviour:
   maxHealth: 10
   damage: 10
   attackSpeed: 1
+  animator: {fileID: 781225252445091869}
   spriteRenderer: {fileID: 7190779436205189484}
 --- !u!135 &328266947153306367
 SphereCollider:

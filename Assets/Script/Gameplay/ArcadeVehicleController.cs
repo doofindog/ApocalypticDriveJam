@@ -70,6 +70,12 @@ namespace ArcadeVP
         private CameraShake cameraShake;
 
         public bool isDestroyed;
+
+        [Header("SFX")]
+        [SerializeField] private GameObject blackSmokeSFX;
+        [SerializeField] private GameObject fireSFX;
+
+        public Action PlayerDestroyed;
         
         private void Start()
         {
@@ -309,6 +315,11 @@ namespace ArcadeVP
             AudioManager.Instance.PlaySFX(AudioManager.Instance.carDamage);
             
             health.Value -= damage;
+            if (health.Value <= 20)
+            {
+                blackSmokeSFX.SetActive(true);
+            }
+            
             if (health.Value <= 0)
             {
                 DestroyCar();
@@ -317,6 +328,7 @@ namespace ArcadeVP
 
         private void DestroyCar()
         {
+            fireSFX.SetActive(true);
             isDestroyed = true;
             AudioManager.Instance.PlaySFX(AudioManager.Instance.carExplode);
 
@@ -324,6 +336,8 @@ namespace ArcadeVP
             verticalInput = 0;
             breakValue = 0;
             boostValue = 0;
+            
+            GameManager.Instance.GameOverEvent?.Invoke();
         }
     }
 }

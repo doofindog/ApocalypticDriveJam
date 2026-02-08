@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Zombie : MonoBehaviour
 {
+    private static readonly int Attack = Animator.StringToHash("Attack");
     private ArcadeVehicleController ObjectToAttack;
     private ArcadeVehicleController ObjectToFlip;
 
@@ -13,6 +14,8 @@ public class Zombie : MonoBehaviour
     [Header("Attack")] public float damage = 10f;
     public float attackSpeed = 1f; // attacks per second
     private float attackTimer;
+
+    [SerializeField] private Animator animator;
 
     [SerializeField] private SpriteRenderer spriteRenderer;
 
@@ -67,6 +70,7 @@ private void TryAttack()
         if (ObjectToAttack == null)
             return;
 
+        animator.SetTrigger(Attack);
         ObjectToAttack.TakeDamage(damage);
         
         //Debug.Log("Zombie attacked the player!");
