@@ -16006,21 +16006,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1057982275785949613, guid: 1c011ec3843551d438fd55349cdf768f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5821904408814685684, guid: 1c011ec3843551d438fd55349cdf768f, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8257249402185727522, guid: 1c011ec3843551d438fd55349cdf768f, type: 3}
       propertyPath: m_Name
       value: Zombie
       objectReference: {fileID: 0}
     - target: {fileID: 8257249402185727522, guid: 1c011ec3843551d438fd55349cdf768f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8544596728849932255, guid: 1c011ec3843551d438fd55349cdf768f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18314,6 +18306,10 @@ PrefabInstance:
       propertyPath: enemyLoadCount
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 4933798157682641013, guid: 78d3eb67bb59f4f479c548e79e116f43, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 151944517}
     - target: {fileID: 5978399835715705676, guid: 78d3eb67bb59f4f479c548e79e116f43, type: 3}
       propertyPath: m_LocalPosition.x
       value: 24.6841

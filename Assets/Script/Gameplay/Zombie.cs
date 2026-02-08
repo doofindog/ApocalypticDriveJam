@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Zombie : MonoBehaviour
 {
-    private ArcadeVehicleController player;
+    private ArcadeVehicleController ObjectToAttack;
+    private ArcadeVehicleController ObjectToFlip;
 
     [Header("Health")] public float health;
     public float maxHealth;
@@ -18,13 +19,15 @@ public class Zombie : MonoBehaviour
     private void Update()
     {
         
+        
+        
         TryFlip();
         
         // Always tick the timer
         attackTimer += Time.deltaTime;
 
         // Safety check before attacking
-        if (player == null)
+        if (ObjectToAttack == null)
             return;
 
         TryAttack();
@@ -34,11 +37,16 @@ public class Zombie : MonoBehaviour
 
     private void TryFlip()
     {
-        var player = GameManager.Instance.player;
-        if (player == null) return;
+
+
+        if (ObjectToFlip == null)
+        {
+            ObjectToFlip = GameManager.Instance.player;
+            return;
+        }
 
         // Player is on the right
-        if (player.transform.position.x > transform.position.x)
+        if (ObjectToFlip.transform.position.x > transform.position.x)
             spriteRenderer.flipX = false;
         else
             spriteRenderer.flipX = true;
@@ -56,10 +64,10 @@ private void TryAttack()
 
     private void AttackPlayer()
     {
-        if (player == null)
+        if (ObjectToAttack == null)
             return;
 
-        player.TakeDamage(damage);
+        ObjectToAttack.TakeDamage(damage);
         
         //Debug.Log("Zombie attacked the player!");
     }
@@ -69,7 +77,7 @@ private void TryAttack()
         if (!other.CompareTag("Player"))
             return;
 
-        player = other.GetComponent<ArcadeVehicleController>();
+        ObjectToAttack = other.GetComponent<ArcadeVehicleController>();
         attackTimer = attackSpeed; // allows instant attack on enter (optional)
     }
 
@@ -78,6 +86,6 @@ private void TryAttack()
         if (!other.CompareTag("Player"))
             return;
 
-        player = null;
+        ObjectToAttack = null;
     }
 }
