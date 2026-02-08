@@ -36,10 +36,13 @@ public class FadeObjectTarget : MonoBehaviour
     {
         while (true)
         {
+            Vector3 playerPos = Target.transform.position + TargetPositionOffset;
+            Vector3 cameraPos = Camera.transform.position;
+
             Hits = Physics.RaycastAll(
-                Camera.transform.position,
-                (Target.transform.position + TargetPositionOffset - Camera.transform.position).normalized,
-                Vector3.Distance(Camera.transform.position, Target.transform.position + TargetPositionOffset),
+                playerPos,
+                (cameraPos - playerPos).normalized,
+                Vector3.Distance(playerPos, cameraPos),
                 LayerMask
             );
             
