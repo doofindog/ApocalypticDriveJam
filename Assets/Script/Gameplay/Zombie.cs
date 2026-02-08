@@ -5,18 +5,21 @@ using UnityEngine;
 public class Zombie : MonoBehaviour
 {
     private ArcadeVehicleController player;
-    
-    [Header("Health")]
-    public float health;
+
+    [Header("Health")] public float health;
     public float maxHealth;
 
-    [Header("Attack")] 
-    public float damage = 10f;
+    [Header("Attack")] public float damage = 10f;
     public float attackSpeed = 1f; // attacks per second
     private float attackTimer;
 
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
     private void Update()
     {
+        
+        TryFlip();
+        
         // Always tick the timer
         attackTimer += Time.deltaTime;
 
@@ -25,9 +28,23 @@ public class Zombie : MonoBehaviour
             return;
 
         TryAttack();
+
+
     }
 
-    private void TryAttack()
+    private void TryFlip()
+    {
+        var player = GameManager.Instance.player;
+        if (player == null) return;
+
+        // Player is on the right
+        if (player.transform.position.x > transform.position.x)
+            spriteRenderer.flipX = false;
+        else
+            spriteRenderer.flipX = true;
+    }
+
+private void TryAttack()
     {
         if (attackTimer < attackSpeed)
             return;

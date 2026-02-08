@@ -117,7 +117,7 @@ namespace LayerLab.ArtMaker
         /// </summary>
         private void HandleZoom()
         {
-            var scroll = Input.GetAxis("Mouse ScrollWheel");
+            var scroll = 0; //Input.GetAxis("Mouse ScrollWheel");
             if (Mathf.Abs(scroll) > 0.01f)
             {
                 var previousZoom = targetZoom;

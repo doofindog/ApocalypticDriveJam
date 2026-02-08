@@ -134,12 +134,12 @@ namespace LayerLab.ArtMaker
             
             CheckDistance();
             
-            if (_rigidbody.velocity.magnitude > 0 && PlayerState != EPlayerState.Run)
+            if (_rigidbody.linearVelocity.magnitude > 0 && PlayerState != EPlayerState.Run)
             {
                 PlayerState = EPlayerState.Run;
                 PartsManager.PlayAnimation("Run");
             }
-            else if (_rigidbody.velocity.magnitude <= 0 && PlayerState != EPlayerState.Idle)
+            else if (_rigidbody.linearVelocity.magnitude <= 0 && PlayerState != EPlayerState.Idle)
             {
                 PlayerState = EPlayerState.Idle;
                 PartsManager.PlayAnimation("Idle");
@@ -172,10 +172,10 @@ namespace LayerLab.ArtMaker
         private void HandleMouseInput()
         {
             var isOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
-            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !isOverUI)
-            {
-                _isDragging = true;
-            }
+            // if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !isOverUI)
+            // {
+            //     _isDragging = true;
+            // }
 
             if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && _isDragging)
             {
@@ -190,7 +190,7 @@ namespace LayerLab.ArtMaker
                 if (!isOverUI)
                 {
                     _isMoving = false;
-                    _rigidbody.velocity = Vector2.zero;
+                    _rigidbody.linearVelocity = Vector2.zero;
                 }
             }
         }
@@ -210,12 +210,12 @@ namespace LayerLab.ArtMaker
             if (_isMoving)
             {
                 _moveDirection = (_targetPosition - transform.position).normalized;
-                _rigidbody.velocity = _moveDirection * moveSpeed;
+                _rigidbody.linearVelocity = _moveDirection * moveSpeed;
                 RotateTowardsMovementDirection(_moveDirection);
             }
             else
             {
-                _rigidbody.velocity = Vector2.zero;
+                _rigidbody.linearVelocity = Vector2.zero;
             }
         }
 
@@ -228,7 +228,7 @@ namespace LayerLab.ArtMaker
             if (_isMoving && InDistance)
             {
                 _isMoving = false;
-                _rigidbody.velocity = Vector2.zero;
+                _rigidbody.linearVelocity = Vector2.zero;
 
                 if (DemoControl.Instance.CurrentPlayMode == PlayMode.Home)
                 {
