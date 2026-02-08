@@ -68,6 +68,8 @@ namespace ArcadeVP
         private Vector3 origin;
         
         private CameraShake cameraShake;
+
+        public bool isDestroyed;
         
         private void Start()
         {
@@ -114,14 +116,17 @@ namespace ArcadeVP
 
         private void Update()
         {
-            Vector2 movement =  movementInput.action.ReadValue<Vector2>();
-            horizontalInput = movement.x; //turning input
-            verticalInput = movement.y;     //accelaration input
+            if (!isDestroyed)
+            {
+                Vector2 movement =  movementInput.action.ReadValue<Vector2>();
+                horizontalInput = movement.x; //turning input
+                verticalInput = movement.y;     //accelaration input
+            }
             
             
             HandleBoost();
             Visuals();
-            AudioManager();
+            AudioHandler();
         }
 
         private void HandleBoost()
@@ -138,7 +143,7 @@ namespace ArcadeVP
                     break;
             }
         }
-        public void AudioManager()
+        public void AudioHandler()
         {
             engineSound.pitch = Mathf.Lerp(minPitch, MaxPitch, Mathf.Abs(carVelocity.z) / MaxSpeed);
             if (Mathf.Abs(carVelocity.x) > 10 && grounded())
@@ -298,6 +303,11 @@ namespace ArcadeVP
 
         public void TakeDamage(float damage)
         {
+            if(health.Value <= 0)
+                return;
+            
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.carDamage);
+            
             health.Value -= damage;
             if (health.Value <= 0)
             {
@@ -307,7 +317,13 @@ namespace ArcadeVP
 
         private void DestroyCar()
         {
-            
+            isDestroyed = true;
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.carExplode);
+
+            horizontalInput = 0;
+            verticalInput = 0;
+            breakValue = 0;
+            boostValue = 0;
         }
     }
 }
